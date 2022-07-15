@@ -14,6 +14,19 @@ struct profileStruct
     unsigned long long int count;
 };
 
+class profilerException : public std::exception {
+public:
+    profilerException(const char* msg) {
+        strcpy_s(message, 256, msg);
+    }
+    char* what() {
+        return message;
+    }
+
+private:
+    char message[256];
+};
+
 class performanceProfiler 
 {
 public:

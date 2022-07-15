@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <time.h>
 
+#include <stdexcept>
 #include <string>
 #include <map>
 
@@ -13,6 +14,7 @@ std::string dir;
 LARGE_INTEGER Freq;
 std::map<std::string, profileStruct> containor;
 performanceProfiler PP;
+
 
 
 void startProfile(std::string name)
@@ -34,8 +36,8 @@ void startProfile(std::string name)
     else if (containor[name].start.QuadPart != 0)
     { 
         std::string msg = "profile name overlapped : " + name;
-
-        throw msg;
+        
+        throw profilerException(msg.c_str());
     }
     QueryPerformanceCounter(&(containor[name].start));
     

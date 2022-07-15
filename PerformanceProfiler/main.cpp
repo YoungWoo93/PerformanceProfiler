@@ -12,6 +12,7 @@ void main()
 		scopeProfiler s2("roop");
 		for (int i = 0; i < 100; i++)
 		{
+			startProfile("test");
 			scopeProfiler s2("roop100");
 			count+= 1;
 			printf("%d\n", count);
