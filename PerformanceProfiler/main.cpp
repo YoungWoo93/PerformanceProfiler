@@ -1,3 +1,5 @@
+#define USE_PROFILE
+
 #include <iostream>
 #include "performanceProfiler.h"
 
@@ -9,24 +11,24 @@ void main()
 	int count = 0;
 	for(int cycle = 0; cycle < 100; cycle++)
 	{
-		scopeProfiler s2("roop");
+		SCOPE_PROFILE("root", test);
 		for (int i = 0; i < 100; i++)
 		{
-			startProfile("test");
-			scopeProfiler s2("roop100");
+			PROFILE_START("roop100");
 			count+= 1;
 			printf("%d\n", count);
-			for (int j = 0; j < 100; j++)
-			{
-				scopeProfiler s3("roop in 10000");
-				for (int k = 0; k < 100; k++)
-				{
-					scopeProfiler s4("roop in 1000000");
-				}
-			}
+			//for (int j = 0; j < 100; j++)
+			//{
+			//	PROFILE("roop10000");
+			//	for (int k = 0; k < 100; k++)
+			//	{
+			//		PROFILE("roop1000000");
+			//	}
+			//}
+			PROFILE_END("roop100");
+			
 		}
 	}
 
 	printf("%d\n", count);
-
 }

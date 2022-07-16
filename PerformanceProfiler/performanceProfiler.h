@@ -1,5 +1,26 @@
 #pragma once
 
+#ifdef USE_PROFILE
+
+#define SCOPE_PROFILE(name, key)    scopeProfiler key(name)
+#define PROFILE_START(name)         startProfile(name)
+#define PROFILE_END(name)           endProfile(name)
+#define PROFILE_CLEAR               clearProfile()
+#define PROFILE_WRITE_DEFAULT_DIR   writeProfiles()
+#define PROFILE_WRITE(dir)          writeProfiles(dir)
+
+#else
+
+#define PROFILE_SCOPE(name, key)       
+#define PROFILE_START(name)     
+#define PROFILE_END(name)       
+#define PROFILE_CLEAR           
+#define PROFILE_WRITE_DEFAULT_DIR      
+#define PROFILE_WRITE(dir)      
+
+#endif
+
+
 #include <Windows.h>
 #include <string>
 
@@ -39,7 +60,7 @@ public:
 class scopeProfiler
 {
 public:
-    scopeProfiler(std::string _name);
+    scopeProfiler(const std::string& _name);
     ~scopeProfiler();
 
 private:
@@ -47,9 +68,11 @@ private:
 };
 
 
-void startProfile(std::string name);
-void endProfile(std::string name);
+void startProfile(const std::string& name);
+void endProfile(const std::string& name);
 void clearProfile();
 
-void setDirProfiles(std::string _dir);
+void setDirProfiles(const std::string& _dir);
+
 void writeProfiles();
+void writeProfiles(const std::string& _dir);

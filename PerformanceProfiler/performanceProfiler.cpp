@@ -17,7 +17,7 @@ performanceProfiler PP;
 
 
 
-void startProfile(std::string name)
+void startProfile(const std::string& name)
 {
     LARGE_INTEGER test;
 
@@ -42,7 +42,7 @@ void startProfile(std::string name)
     QueryPerformanceCounter(&(containor[name].start));
     
 }
-void endProfile(std::string name)
+void endProfile(const std::string& name)
 {
     if (containor[name].start.QuadPart == 0)
         return;
@@ -75,27 +75,31 @@ void endProfile(std::string name)
     containor[name].start.QuadPart = 0;
     containor[name].count++;
 }
-void clearProfile()
-{
+void clearProfile(){
     containor.clear();
 }
-void setDirProfiles(std::string _dir)
-{
+
+void setDirProfiles(const std::string& _dir){
     dir = _dir;
 }
-void writeProfiles()
+
+void writeProfiles(){
+    writeProfiles(dir);
+}
+
+void writeProfiles(const std::string& _dir)
 {
     struct tm curr_tm;
     time_t t = time(0);
     localtime_s(&curr_tm, &t);
 
     FILE* file;
-    std::string filename = (dir + "["
-        + std::to_string(curr_tm.tm_year + 1900) + "."
-        + std::to_string(curr_tm.tm_mon + 1) + "."
+    std::string filename = (_dir + "["
+        + std::to_string(curr_tm.tm_year + 1900) + "-"
+        + std::to_string(curr_tm.tm_mon + 1) + "-"
         + std::to_string(curr_tm.tm_mday) + "] "
-        + std::to_string(curr_tm.tm_hour) + "-"
-        + std::to_string(curr_tm.tm_min) + "-"
+        + std::to_string(curr_tm.tm_hour) + "_"
+        + std::to_string(curr_tm.tm_min) + "_"
         + std::to_string(curr_tm.tm_sec)
         + ".csv"
         );
@@ -103,7 +107,7 @@ void writeProfiles()
 
 
     fopen_s(&file, filename.c_str(), "wt");
-    
+
     fprintf(file, "No,Name,Min(§Á),Average(§Á),Max(§Á),Call Count\n");
 
     int no = 0;
@@ -136,7 +140,7 @@ performanceProfiler::~performanceProfiler()
 
 
 
-scopeProfiler::scopeProfiler(std::string _name) :name(_name)
+scopeProfiler::scopeProfiler(const std::string& _name) :name(_name)
 {
     startProfile(name);
    
